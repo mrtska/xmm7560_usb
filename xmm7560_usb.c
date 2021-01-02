@@ -1,5 +1,6 @@
 /**
- * Copyright (C) 2019  Juho Vähä-Herttua
+ * Copyright (C) 2021 mrtska
+ * original author: Juho Vähä-Herttua
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -27,14 +28,14 @@
  
 MODULE_LICENSE("GPL");
 MODULE_VERSION("0.1");
-MODULE_AUTHOR("Juho Vähä-Herttua <juhovh@iki.fi>");
-MODULE_DESCRIPTION("A simple driver that sets the XMM7360 card from PCIe to USB mode.");
-MODULE_ALIAS("pci:v00008086d00007360sv*sd*bc*sc*i*");
+MODULE_AUTHOR("mrtska <mrtska@mrtska.net>");
+MODULE_DESCRIPTION("A simple driver that sets the XMM7560 card from PCIe to USB mode.");
+MODULE_ALIAS("pci:v00008086d00007560sv*sd*bc*sc*i*");
  
-#define XMM7360 0x7360
+#define XMM7560 0x7560
 
 static struct pci_device_id pci_ids[] = {
-    { PCI_VDEVICE(INTEL, XMM7360), },
+    { PCI_VDEVICE(INTEL, XMM7560), },
     { 0, }
 };
 
@@ -75,7 +76,7 @@ static bool pcie_link_set_enabled(struct pci_dev *dev, bool enable) {
     return changed;
 }
 
-static bool mmx7360_set_usb_mode(struct pci_dev *dev, bool enable_usb) {
+static bool xmm7560_set_usb_mode(struct pci_dev *dev, bool enable_usb) {
     struct acpi_device *adev;
     bool needs_reset;
     acpi_status status;
@@ -104,7 +105,7 @@ static bool mmx7360_set_usb_mode(struct pci_dev *dev, bool enable_usb) {
 }
 
 static int pci_probe(struct pci_dev *dev, const struct pci_device_id *id) {
-    if (!mmx7360_set_usb_mode(dev, true)) {
+    if (!xmm7560_set_usb_mode(dev, true)) {
         return -1;
     }
 
@@ -112,17 +113,17 @@ static int pci_probe(struct pci_dev *dev, const struct pci_device_id *id) {
 }
 
 static void pci_remove(struct pci_dev *dev) {
-    mmx7360_set_usb_mode(dev, false);
+    xmm7560_set_usb_mode(dev, false);
 }
 
 static struct pci_driver pci_driver = {
-    .name       = "xmm7360_usb",
+    .name       = "xmm7560_usb",
     .id_table   = pci_ids,
     .probe      = pci_probe,
     .remove     = pci_remove,
 };
 
-static int __init xmm7360_usb_init(void){
+static int __init xmm7560_usb_init(void){
     int ret;
 
     ret = pci_register_driver(&pci_driver);
@@ -134,9 +135,9 @@ static int __init xmm7360_usb_init(void){
     return 0;
 }
 
-static void __exit xmm7360_usb_exit(void){
+static void __exit xmm7560_usb_exit(void){
     pci_unregister_driver(&pci_driver);
 }
  
-module_init(xmm7360_usb_init);
-module_exit(xmm7360_usb_exit);
+module_init(xmm7560_usb_init);
+module_exit(xmm7560_usb_exit);

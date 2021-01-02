@@ -1,4 +1,4 @@
-obj-m := xmm7360_usb.o
+obj-m := xmm7560_usb.o
 
 KVERSION := $(shell uname -r)
 KDIR := /lib/modules/$(KVERSION)/build
@@ -14,5 +14,5 @@ install:
 	$(MAKE) -C $(KDIR) M=$(PWD) modules_install
 
 load:
-	-/sbin/rmmod xmm7360
-	/sbin/insmod xmm7360.ko
+	-/sbin/rmmod xmm7560
+	/sbin/insmod xmm7560.ko
