@@ -1,4 +1,4 @@
-# XMM7360 modem to USB
+# XMM7560 modem to USB
 
 This is basically a kernel module version of the python script `xmm2usb` found
 in [James Wah's repository](https://github.com/abrasive/xmm7360). Please be
@@ -29,7 +29,7 @@ Simply run the following:
 ```
 make
 sudo make install
-sudo modprobe xmm7360_usb
+sudo modprobe xmm7560_usb
 ```
 
 Then after the modem boots in USB mode follow the instructions in the [original
@@ -41,10 +41,8 @@ connecting to the serial and running:
 at@nvm:fix_cat_fcclock.fcclock_mode?
 at@nvm:fix_cat_fcclock.fcclock_mode=0
 at@store_nvm(fix_cat_fcclock)
-AT+GTUSBMODE?
-AT+GTUSBMODE=7
 AT+CFUN?
-AT+CFUN=15
+AT+CFUN=1
 ```
 
 Everything simply worked on my machine from that onwards, and the automatically
